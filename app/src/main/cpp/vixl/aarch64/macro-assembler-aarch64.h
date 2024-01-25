@@ -38,12 +38,10 @@
 // Required for runtime call support.
 // TODO: Break this dependency. We should be able to separate out the necessary
 // parts so that we don't need to include the whole simulator header.
-#include "simulator-aarch64.h"
 // Required in order to generate debugging instructions for the simulator. This
 // is needed regardless of whether the simulator is included or not, since
 // generating simulator specific instructions is controlled at runtime.
 #include "simulator-constants-aarch64.h"
-
 
 #define LS_MACRO_LIST(V)                                     \
   V(Ldrb, Register&, rt, LDRB_w)                             \

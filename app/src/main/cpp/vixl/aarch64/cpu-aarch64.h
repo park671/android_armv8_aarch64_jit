@@ -31,7 +31,6 @@
 #include "../globals-vixl.h"
 
 #include "instructions-aarch64.h"
-#include "simulator-aarch64.h"
 
 #ifndef VIXL_INCLUDE_TARGET_AARCH64
 // The supporting .cc file is only compiled when the A64 target is selected.

@@ -2787,7 +2787,6 @@ void MacroAssembler::Trace(TraceParameters parameters, TraceCommand command) {
     Label start;
     bind(&start);
 
-    // Refer to simulator-aarch64.h for a description of the marker and its
     // arguments.
     hlt(kTraceOpcode);
 
@@ -2813,8 +2812,6 @@ void MacroAssembler::Log(TraceParameters parameters) {
 
     Label start;
     bind(&start);
-
-    // Refer to simulator-aarch64.h for a description of the marker and its
     // arguments.
     hlt(kLogOpcode);
 

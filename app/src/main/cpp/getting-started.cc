@@ -25,7 +25,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "aarch64/macro-assembler-aarch64.h"
-#include "aarch64/simulator-aarch64.h"
 
 #include "getting-started.h"
 
