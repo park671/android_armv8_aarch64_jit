@@ -16,7 +16,7 @@ int func(unsigned char *binary, int size, int a, int b) {
     memcpy(mem, binary, size);
     printf("---binary---\n");
     for (int i = 0; i < size; i++) {
-        printf("0x%02X\n", binary[i]);
+        printf("%02X\n", binary[i]);
     }
     printf("---binary---\n");
     int (*fn)(int a, int b) = (int (*)(int, int)) mem;

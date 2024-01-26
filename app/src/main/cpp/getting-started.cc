@@ -33,9 +33,14 @@ using namespace vixl;
 using namespace vixl::aarch64;
 
 void generateAddFunc(MacroAssembler *masm) {
+    Label label;
     masm->Mov(x8, x0);
     masm->Mov(x9, x1);
     masm->Add(x0, x8, x9);
+    masm->Ret();
+    masm->Bl(&label);
+    masm->Mov(x1, 3);
+    masm->bind(&label);
     masm->Mov(x1, 2);
     masm->Mul(x0, x0, x1);
     masm->Ret();
