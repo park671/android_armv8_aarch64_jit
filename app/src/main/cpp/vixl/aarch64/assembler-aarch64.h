@@ -27,7 +27,7 @@
 #ifndef VIXL_AARCH64_ASSEMBLER_AARCH64_H_
 #define VIXL_AARCH64_ASSEMBLER_AARCH64_H_
 
-#include "../assembler-base-vixl.h"
+//#include "../assembler-base-vixl.h"
 #include "../code-generation-scopes-vixl.h"
 #include "../cpu-features.h"
 #include "../globals-vixl.h"
@@ -37,9 +37,6 @@
 
 namespace vixl {
 namespace aarch64 {
-
-class LabelTestHelper;  // Forward declaration.
-
 
 class Label {
  public:

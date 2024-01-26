@@ -13,7 +13,7 @@ int pipe_stdout[2];
 int pipe_stderr[2];
 pthread_t thread_stdout;
 pthread_t thread_stderr;
-const char *QUICKJS_TAG = "jit_native";
+const char *NATIVE_TAG = "jit_native";
 
 void *thread_stderr_func(void *) {
     ssize_t redirect_size;
@@ -23,7 +23,7 @@ void *thread_stderr_func(void *) {
         if (buf[redirect_size - 1] == '\n')
             --redirect_size;
         buf[redirect_size] = 0;
-        __android_log_write(ANDROID_LOG_ERROR, QUICKJS_TAG, buf);
+        __android_log_write(ANDROID_LOG_ERROR, NATIVE_TAG, buf);
     }
     return 0;
 }
@@ -36,7 +36,7 @@ void *thread_stdout_func(void *) {
         if (buf[redirect_size - 1] == '\n')
             --redirect_size;
         buf[redirect_size] = 0;
-        __android_log_write(ANDROID_LOG_INFO, QUICKJS_TAG, buf);
+        __android_log_write(ANDROID_LOG_INFO, NATIVE_TAG, buf);
     }
     return 0;
 }
@@ -66,7 +66,7 @@ int start_redirecting_stdout_stderr() {
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
     //Start threads to show stdout and stderr in logcat.
     if (start_redirecting_stdout_stderr() == -1) {
-        __android_log_write(ANDROID_LOG_ERROR, QUICKJS_TAG,
+        __android_log_write(ANDROID_LOG_ERROR, NATIVE_TAG,
                             "Couldn't start redirecting stdout and stderr to logcat.\n");
     }
     printf("started redirecting stdout and stderr to logcat.\n");

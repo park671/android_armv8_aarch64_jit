@@ -30,9 +30,9 @@
 #include <algorithm>
 #include <limits>
 
-#include "../code-generation-scopes-vixl.h"
-#include "../globals-vixl.h"
-#include "../macro-assembler-interface.h"
+//#include "../code-generation-scopes-vixl.h"
+//#include "../globals-vixl.h"
+//#include "../macro-assembler-interface.h"
 
 #include "assembler-aarch64.h"
 // Required for runtime call support.

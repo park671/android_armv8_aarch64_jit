@@ -27,9 +27,6 @@
 #include "aarch64/macro-assembler-aarch64.h"
 
 #include "getting-started.h"
-
-#include "aarch64/disasm-aarch64.h"
-
 #include "jit.h"
 
 using namespace vixl;
@@ -54,10 +51,5 @@ extern "C" int main() {
     size_t code_size = masm.GetSizeOfCodeGenerated();
     int result = func(code, code_size, 4, 7);
     printf("add result=%d\n", result);
-    PrintDisassembler disasm(stdout);
-    disasm.DisassembleBuffer(
-            reinterpret_cast<const Instruction *>(masm.GetBuffer()->GetStartAddress<byte *>()),
-            code_size
-    );
     return 0;
 }
