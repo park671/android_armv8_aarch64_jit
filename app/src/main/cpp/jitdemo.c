@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "jit.h"
+#include "executable_mem.h"
 
 
 #include <pthread.h>
@@ -78,11 +78,14 @@ Java_com_park_jitdemo_NativeBridge_executeBinary(JNIEnv *env, jclass clazz, jbyt
                                                  jint a, jint b) {
     unsigned char *codes = (unsigned char *) (*env)->GetByteArrayElements(env, native_codes,
                                                                           JNI_FALSE);
-    int len = (*env)->GetArrayLength(env, native_codes);
+    int codeSize = (*env)->GetArrayLength(env, native_codes);
     int paramA = a;
     int paramB = b;
-    int result = func(codes, len, paramA, paramB);
-    (*env)->ReleaseByteArrayElements(env, native_codes, (jbyte *) (codes), JNI_FALSE);
+    void *execMem = createExecutableMemory(codes, codeSize);
+    int (*fn)(int a, int b) = (int (*)(int, int)) execMem;
+    int result = fn(paramA, paramB);
+    releaseExecutableMemory(execMem, codeSize);
+    (*env)->ReleaseByteArrayElements(env, native_codes, (jbyte * )(codes), JNI_FALSE);
     return result;
 }
 

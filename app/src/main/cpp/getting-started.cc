@@ -27,7 +27,7 @@
 #include "aarch64/macro-assembler-aarch64.h"
 
 #include "getting-started.h"
-#include "jit.h"
+#include "executable_mem.h"
 
 using namespace vixl;
 using namespace vixl::aarch64;
@@ -37,7 +37,6 @@ void generateAddFunc(MacroAssembler *masm) {
     masm->Mov(x8, x0);
     masm->Mov(x9, x1);
     masm->Add(x0, x8, x9);
-    masm->Ret();
     masm->Bl(&label);
     masm->Mov(x1, 3);
     masm->bind(&label);
@@ -48,13 +47,13 @@ void generateAddFunc(MacroAssembler *masm) {
 
 extern "C" int main() {
     MacroAssembler masm;
-    Label demo;
-    masm.Bind(&demo);
     generateAddFunc(&masm);
     masm.FinalizeCode();
     byte *code = masm.GetBuffer()->GetStartAddress<byte *>();
     size_t code_size = masm.GetSizeOfCodeGenerated();
-    int result = func(code, code_size, 4, 7);
-    printf("add result=%d\n", result);
+    void *execMem = createExecutableMemory(code, code_size);
+    int (*numFunc)(int a, int b) = (int (*)(int, int)) execMem;
+    printf("add result=%d\n", numFunc(4, 7));
+    releaseExecutableMemory(execMem, code_size);
     return 0;
 }

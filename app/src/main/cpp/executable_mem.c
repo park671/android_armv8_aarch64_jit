@@ -2,13 +2,13 @@
 // Created by Park Yu on 2024/1/25.
 //
 
-#include "jit.h"
+#include "executable_mem.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
 
-int func(unsigned char *binary, int size, int a, int b) {
+void *createExecutableMemory(unsigned char *binary, int size) {
     void *mem = mmap(NULL, size, PROT_WRITE | PROT_EXEC,
                      MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
     printf("mem=%p\n", mem);
@@ -19,8 +19,9 @@ int func(unsigned char *binary, int size, int a, int b) {
         printf("%02X\n", binary[i]);
     }
     printf("---binary---\n");
-    int (*fn)(int a, int b) = (int (*)(int, int)) mem;
-    int result = fn(a, b);
-    munmap(mem, size);
-    return result;
+    return mem;
+}
+
+int releaseExecutableMemory(void *memory, int size) {
+    return munmap(memory, size);
 }
