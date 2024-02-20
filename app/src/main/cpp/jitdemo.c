@@ -7,6 +7,8 @@
 #include <android/log.h>
 #include <stdio.h>
 #include "getting-started.h"
+#include "tcc/libtcc.h"
+#include "tcc/tcc.h"
 
 // Start threads to redirect stdout and stderr to logcat.
 int pipe_stdout[2];
@@ -85,11 +87,51 @@ Java_com_park_jitdemo_NativeBridge_executeBinary(JNIEnv *env, jclass clazz, jbyt
     int (*fn)(int a, int b) = (int (*)(int, int)) execMem;
     int result = fn(paramA, paramB);
     releaseExecutableMemory(execMem, codeSize);
-    (*env)->ReleaseByteArrayElements(env, native_codes, (jbyte * )(codes), JNI_FALSE);
+    (*env)->ReleaseByteArrayElements(env, native_codes, (jbyte *) (codes), JNI_FALSE);
     return result;
 }
 
 JNIEXPORT void JNICALL
 Java_com_park_jitdemo_NativeBridge_testVixl(JNIEnv *env, jclass clazz) {
-    main();
+    testVixil();
+}
+
+JNIEXPORT jint JNICALL
+Java_com_park_jitdemo_NativeBridge_testCompiler(JNIEnv *env, jclass clazz, jstring c_source_code,
+                                                jint a, jint b) {
+    char *c_code = (*env)->GetStringUTFChars(env, c_source_code, JNI_FALSE);
+    printf("source=%s\n", c_code);
+    TCCState *s;
+    s = tcc_new();
+    s->verbose = 1;
+    s->nostdinc = 1;
+    s->nostdlib = 1;
+    s->nocommon = 1;
+    s->do_debug = 0;
+    tcc_set_output_type(s, TCC_OUTPUT_OBJ);
+    s->ppfp = stdout;
+    int compile_result = tcc_compile_string(s, c_code);
+    if (compile_result != 0) {
+        return compile_result;
+    }
+    (*env)->ReleaseStringUTFChars(env, c_source_code, c_code);
+
+    Section *section;
+    int i, size;
+    int result = 0;
+    int (*add)(int, int) = NULL;
+    for (i = 1; i < s->nb_sections; i++) {
+        section = s->sections[i];
+        if (section->sh_type != SHT_NOBITS) {
+            size = section->data_offset;
+            if (size && strcmp(".text", section->name) == 0) {
+                printf("write data:%s, addr:%p size:%d\n", section->name, section->data, size);
+                add = createExecutableMemory((unsigned char *) section->data, size);
+                result = add(a, b);
+                printf("fun(%d, %d) = %d\n", a, b, result);
+                return result;
+            }
+        }
+    }
+    return compile_result;
 }

@@ -5,9 +5,9 @@
 #ifndef JIT_DEMO_GETTING_STARTED_H
 #define JIT_DEMO_GETTING_STARTED_H
 #ifdef __cplusplus
-extern "C" int main();
+extern "C" int testVixil();
 #else
-int main();
+int testVixil();
 #endif
 
 #endif //JIT_DEMO_GETTING_STARTED_H

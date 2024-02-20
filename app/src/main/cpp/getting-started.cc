@@ -45,7 +45,7 @@ void generateAddFunc(MacroAssembler *masm) {
     masm->Ret();
 }
 
-extern "C" int main() {
+extern "C" int testVixil() {
     MacroAssembler masm;
     generateAddFunc(&masm);
     masm.FinalizeCode();

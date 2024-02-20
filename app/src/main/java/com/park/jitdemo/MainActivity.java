@@ -64,6 +64,18 @@ public class MainActivity extends Activity {
                 NativeBridge.testVixl();
             }
         });
+
+        findViewById(R.id.testCompilerButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String addSourceCodeInC = """
+                        int add(int a, int b) {
+                        int c = a * b;
+                        return c;
+                        }""";
+                Log.d(TAG, "result:" + NativeBridge.testCompiler(addSourceCodeInC, 4, 98));
+            }
+        });
     }
 
 }

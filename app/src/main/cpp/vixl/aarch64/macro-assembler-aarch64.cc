@@ -2546,7 +2546,7 @@ void MacroAssembler::BumpSystemStackPointer(const Operand& space) {
 
 // TODO(all): Fix printf for NEON and SVE registers.
 
-// This is the main Printf implementation. All callee-saved registers are
+// This is the testVixil Printf implementation. All callee-saved registers are
 // preserved, but NZCV and the caller-saved registers may be clobbered.
 void MacroAssembler::PrintfNoPreserve(const char* format,
                                       const CPURegister& arg0,
